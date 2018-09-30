@@ -1,56 +1,66 @@
 <template>
   <ion-app>
     <ion-page class="show-page">
+
       <ion-header>
         <ion-toolbar>
-          <ion-buttons start>
-            <button ion-button icon-only>
-              <ion-icon name="search"></ion-icon>
-            </button>
+
+          <ion-buttons slot="start">
+            <ion-button><img src="../assets/logo.png"></ion-button>
           </ion-buttons>
+
           <ion-title class="toolbar-background"><span class="title-color">Red Stop</span></ion-title>
-          <ion-buttons end>
-            <button ion-button icon-only color="royal">
-              <ion-icon name="person-add"></ion-icon>
-            </button>
+
+          <ion-buttons slot="end">
+            <ion-button><img src="../assets/logo.png"></ion-button>
           </ion-buttons>
+
         </ion-toolbar>
+
       </ion-header>
+      <ion-content>
+        <ion-searchbar placeholder="URL을 검색해 주세요">
 
-      <ion-content class="content" padding>
-        <ion-list>
-          <ion-item v-for="item of items" v-bind:key="item.id">
-            <ion-label full></ion-label>
-          </ion-item>
-        </ion-list>
+        </ion-searchbar>
+          <ion-list>
+            <div class="content-background">
+              <ion-item v-for="(value, key) in items" :key="key" @click="mouseClick(value)">
+                <ion-label>{{value}}</ion-label>
+              </ion-item>
+            </div>
+          </ion-list>
       </ion-content>
-
     </ion-page>
   </ion-app>
 </template>
 <script>
-  export default {
-    name: 'Main',
-    data() {
-      return {
-        items: [{id: 0, name: 'Ahmed'}, {id: 1, name: 'Naima'}]
-      }
+export default {
+  name: 'Main',
+  data () {
+    return {
+      items: [{url: 0, name: 'Ahmed'}, {id: 1, name: 'Naima'}]
+    }
+  },
+  methods:{
+    mouseClick(value){
+      console.log(value.name)
     }
   }
+}
 </script>
 
 <style scoped>
-  .toolbar-background {
-    background-color: #526387;
-  }
-
   .title-color {
     color: white;
   }
 
-  .logo{
-    width: 15px;
-    height: 15px;
-    font-weight: left;
+  .toolbar-background {
+    background-color: #526387;
+  }
+
+  .content-background {
+    background-color: #F2F7FB;
+    width: 100%;
+    height: 100%;
   }
 </style>
