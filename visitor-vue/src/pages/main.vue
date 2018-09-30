@@ -25,7 +25,7 @@
           <ion-list>
             <div class="content-background">
               <ion-item v-for="(value, key) in items" :key="key" @click="mouseClick(value)">
-                <ion-label>{{value}}</ion-label><img src="../assets/logo.png">
+                <ion-label>{{value.url}}</ion-label><img src="../assets/logo.png">
               </ion-item>
             </div>
           </ion-list>
@@ -38,12 +38,19 @@ export default {
   name: 'Main',
   data () {
     return {
-      items: [{url: 0, name: 'Ahmed'}, {id: 1, name: 'Naima'}]
+      debugHost: 'http://localhost:3000',
+      items: [
+        {url: '/api/json-test/single-json', method: 'get'},
+        {url: '/', method: 'get'},
+        {url: '/api/json-test/multi-json', method: 'get'}
+      ]
     }
   },
   methods: {
     mouseClick (value) {
-      console.log(value.name)
+      this.$http[value.method](this.debugHost + value.url).then((response) => {
+        console.log(response.data)
+      })
     }
   }
 }
