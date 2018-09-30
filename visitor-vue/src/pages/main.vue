@@ -25,7 +25,7 @@
           <ion-list>
             <div class="content-background">
               <ion-item v-for="(value, key) in items" :key="key" @click="mouseClick(value)">
-                <ion-label>{{value}}</ion-label>
+                <ion-label>{{value}}</ion-label><img src="../assets/logo.png">
               </ion-item>
             </div>
           </ion-list>
@@ -41,8 +41,8 @@ export default {
       items: [{url: 0, name: 'Ahmed'}, {id: 1, name: 'Naima'}]
     }
   },
-  methods:{
-    mouseClick(value){
+  methods: {
+    mouseClick (value) {
       console.log(value.name)
     }
   }
