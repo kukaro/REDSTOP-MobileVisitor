@@ -22,22 +22,26 @@
         <ion-searchbar placeholder="URL을 검색해 주세요">
 
         </ion-searchbar>
-          <ion-list>
-            <div class="content-background">
-              <ion-item v-for="(value, key) in items" :key="key" @click="mouseClick(value)">
-                <ion-label>{{value.url}}</ion-label><img src="../assets/logo.png">
-              </ion-item>
-            </div>
-          </ion-list>
+        <ion-list>
+          <div class="content-background">
+            <ion-item v-for="(value, key) in items" :key="key" @click="mouseClick(value)">
+              <ion-label>{{value.url}}</ion-label>
+              <img src="../assets/logo.png">
+            </ion-item>
+          </div>
+        </ion-list>
       </ion-content>
     </ion-page>
   </ion-app>
 </template>
 <script>
+var DCL = console.log
+
 export default {
   name: 'Main',
   data () {
     return {
+      isConnected: false,
       debugHost: 'http://localhost:3000',
       items: [
         {url: '/api/json-test/single-json', method: 'get'},
@@ -45,6 +49,16 @@ export default {
         {url: '/api/json-test/multi-json', method: 'get'}
       ]
     }
+  },
+  sockets: {
+    connect () {
+      this.isConnected = true
+      DCL('connect success')
+      this.$socket.emit('reqSignIn', {id: 'kukaro', pw: '1234'})
+    }
+  },
+  created: function () {
+
   },
   methods: {
     mouseClick (value) {

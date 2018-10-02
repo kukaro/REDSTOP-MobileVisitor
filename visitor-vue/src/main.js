@@ -4,6 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import axios from 'axios'
+import SocketIo from 'socket.io-client'
+import VueSocketIO from 'vue-socket.io'
+
+export const SocketInstance = SocketIo('http://localhost:3100')
+
+Vue.use(VueSocketIO, SocketInstance)
 
 Vue.prototype.$http = axios
 
