@@ -7,7 +7,7 @@ import axios from 'axios'
 import SocketIo from 'socket.io-client'
 import VueSocketIO from 'vue-socket.io'
 
-export const SocketInstance = SocketIo('http://localhost:3100')
+export const SocketInstance = SocketIo('http://localhost:2100')
 
 Vue.use(VueSocketIO, SocketInstance)
 
