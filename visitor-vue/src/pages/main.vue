@@ -35,39 +35,50 @@
   </ion-app>
 </template>
 <script>
-var DCL = console.log
+/* eslint-disable */
+  var DCL = console.log
 
-export default {
-  name: 'Main',
-  data () {
-    return {
-      isConnected: false,
-      debugHost: 'http://localhost:3000',
-      items: [
-        {url: '/api/json-test/single-json', method: 'get'},
-        {url: '/', method: 'get'},
-        {url: '/api/json-test/multi-json', method: 'get'}
-      ]
-    }
-  },
-  sockets: {
-    connect () {
-      this.isConnected = true
-      DCL('connect success')
-      this.$socket.emit('reqSignIn', {id: 'kukaro', pw: '1234'})
-    }
-  },
-  created: function () {
+  export default {
+    name: 'Main',
+    data() {
+      return {
+        isConnected: false,
+        items: [
+          {url: '/api/json-test/single-json', method: 'get'},
+          {url: '/', method: 'get'},
+          {url: '/api/json-test/multi-json', method: 'get'}
+        ]
+      }
+    },
+    sockets: {
+      connect () {
+        this.isConnected = true
+        DCL('connect success')
+        this.$socket.emit('reqSignIn', {username: 'kukaro', password: '1234'})
+      },
+      getAuth (data) {
+        let userAuth = data
+        DCL(data)
+        if (userAuth['success']) {
+          this.$socket.emit('reqUrls', {username: userAuth['username']})
+        }
+      },
+      getUrls (data) {
+        DCL(data)
+        this.items = data
+      }
+    },
+    created: function () {
 
-  },
-  methods: {
-    mouseClick (value) {
-      this.$http[value.method](this.debugHost + value.url).then((response) => {
-        console.log(response.data)
-      })
+    },
+    methods: {
+      mouseClick(value) {
+        this.$http[value.method](value.url).then((response) => {
+          console.log(response.data)
+        })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
