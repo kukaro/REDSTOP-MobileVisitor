@@ -54,6 +54,8 @@
   /* eslint-disable */
   import schedule from 'node-schedule'
   import os from 'os'
+  import whois from 'whois-ux'
+  import axios from 'axios'
 
   var DCL = console.log
 
@@ -131,14 +133,37 @@
               // console.log('hihih')
               DCL(this.count++)
               for (let atom in this.items) {
+                let start_ms = new Date().getMilliseconds()
                 this.$http[this.items[atom].method](this.items[atom].url).then((response) => {
+                  let end_ms = new Date().getMilliseconds()
                   DCL(new Date())
-                  // setTimeout(tdate*1000)
+                  let responsetime = end_ms - start_ms
                   DCL(response.data)
+                  DCL(this.items[atom])
                   this.$socket.emit('sendVisitData', {
                     username: this.userAuth['username'],
+                    url: this.items[atom].url,
+                    method: this.items[atom].method,
+                    name: this.items[atom].name,
                     data: response.data,
-                    deviceInformation: this.deviceInformation
+                    deviceInformation: this.deviceInformation,
+                    responsetime,
+                    status: response.status
+                  })
+                }).catch((err) => {
+                  let end_ms = new Date().getMilliseconds()
+                  let responsetime = end_ms - start_ms
+                  DCL(new Date())
+                  DCL(err.response)
+                  this.$socket.emit('sendVisitData', {
+                    username: this.userAuth['username'],
+                    url: this.items[atom].url,
+                    method: this.items[atom].method,
+                    name: this.items[atom].name,
+                    data: err.response.data,
+                    deviceInformation: this.deviceInformation,
+                    responsetime,
+                    status: err.response.status
                   })
                 })
               }
@@ -154,6 +179,14 @@
     },
     mounted: function () {
       DCL(this.$refs)
+      axios.get('http://ip-api.com/json').then(response => {
+        console.log(response.data)
+        this.deviceInformation = {
+          myPlatform: navigator.appVersion,
+          myISP: response.data['isp'],
+          myRegion: response.data['country'] + ' ' + response.data['regionName'],
+        }
+      })
     },
     methods: {
       mouseClick(value) {
