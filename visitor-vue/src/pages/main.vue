@@ -54,8 +54,8 @@
   /* eslint-disable */
   import schedule from 'node-schedule'
   import os from 'os'
-  import whois from 'whois-ux'
   import axios from 'axios'
+  import moment from 'moment'
 
   var DCL = console.log
 
@@ -133,12 +133,12 @@
               // console.log('hihih')
               DCL(this.count++)
               for (let atom in this.items) {
-                let start_ms = new Date().getMilliseconds()
+                let start_ms = new Date().getMilliseconds() + new Date().getSeconds() * 1000 + new Date().getMinutes() * 1000 * 60 + new Date().getHours() * 1000 * 60 * 60
                 this.$http[this.items[atom].method](this.items[atom].url).then((response) => {
-                  let end_ms = new Date().getMilliseconds()
+                  let end_ms = new Date().getMilliseconds() + new Date().getSeconds() * 1000 + new Date().getMinutes() * 1000 * 60 + new Date().getHours() * 1000 * 60 * 60
                   DCL(new Date())
                   let responsetime = end_ms - start_ms
-                  DCL(response.data)
+                  DCL(response)
                   DCL(this.items[atom])
                   this.$socket.emit('sendVisitData', {
                     username: this.userAuth['username'],
@@ -151,7 +151,7 @@
                     status: response.status
                   })
                 }).catch((err) => {
-                  let end_ms = new Date().getMilliseconds()
+                  let end_ms = new Date().getMilliseconds() + new Date().getSeconds() * 1000 + new Date().getMinutes() * 1000 * 60 + new Date().getHours() * 1000 * 60 * 60
                   let responsetime = end_ms - start_ms
                   DCL(new Date())
                   DCL(err.response)
